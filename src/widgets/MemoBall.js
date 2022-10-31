@@ -1,17 +1,16 @@
-import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { grey } from "@mui/material/colors";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { Icon, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { useSetRecoilState } from "recoil";
 import { todoListState } from "../RecoilStates";
+import uuid from 'react-uuid';
+
 
 export default function MemoBall({ color, show, index }) {
   const setTodoList = useSetRecoilState(todoListState);
 
   const addTask = () => {
-    setTodoList((og) => [...og, "hi"]);
+    setTodoList((og) => [...og, {color: color, content: 'test', uid: uuid()}]);
   };
 
   const variants = {
@@ -42,7 +41,7 @@ export default function MemoBall({ color, show, index }) {
             backgroundColor: color,
           },
         }}
-        onClick={()=>{addTask()}}
+        onClick={()=>{addTask(color)}}
       ></IconButton>
     </motion.div>
   );

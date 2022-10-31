@@ -8,9 +8,10 @@ export default function TaskArea() {
     const title = getTitle(location.pathname)
 
   return (
-    <Box>
-        <Box>{title}</Box>
-    
+    <Box sx={{mt:10, ml: 4, mr: 4}}>
+        <Box sx={{fontSize:'2rem'}}>{title}</Box>
+        <Box sx={{mt: 4}}><Outlet /></Box>
+        
     </Box>
   )
 }

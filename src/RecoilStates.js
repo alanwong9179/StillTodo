@@ -5,6 +5,12 @@ const todoListState = atom({
     default: [],
   });
 
+const currEditTask = atom({
+  key: 'currEditTask',
+  default: ''
+})
+
 export {
-    todoListState
+    todoListState,
+    currEditTask
 }

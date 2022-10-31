@@ -5,6 +5,7 @@ import TodayTasks from "./screen/TodayTasks";
 import {Routes,Route} from "react-router-dom";
 import TaskArea from "./screen/TaskArea";
 import Notes from "./screen/Notes";
+import RightBar from "./widgets/RightBar";
 
 const RouterCenter = () => {
 
@@ -34,6 +35,12 @@ function App() {
         flex: 10
       }}>
       <RouterCenter />
+      </Box>
+
+      <Box style={{
+        flex: 1
+      }}>
+        <RightBar />
       </Box>
 
 

@@ -12,7 +12,7 @@ export default function SideBar() {
         textAlign:'-webkit-center'
     }}>
         <Box sx={{paddingTop: 4, fontWeight:'bold'}}>StillTodo</Box>
-        <Box sx={{paddingTop: 3}}><ShowMemoButton /></Box>
+        <Box sx={{paddingTop: 4}}><ShowMemoButton /></Box>
 
     </Box>
   )
