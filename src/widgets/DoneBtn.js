@@ -12,10 +12,10 @@ const buttonTheme = createTheme({
     }
 })
 
-export default function DoneBtn({isEditing}) {
+export default function DoneBtn({isEditing, onDone}) {
   return (
     <ThemeProvider theme={buttonTheme}>
-        <Button variant="contained" size="small" sx={{padding: 1, minWidth: 0, borderRadius: 3}} disabled={isEditing}>
+        <Button variant="contained" size="small" sx={{padding: 1, minWidth: 0, borderRadius: 3}} disabled={isEditing} onClick={()=>{onDone()}}>
          <DoneOutlineIcon />
         </Button>
     </ThemeProvider>

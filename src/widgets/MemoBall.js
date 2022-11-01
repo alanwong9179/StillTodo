@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { IconButton } from "@mui/material";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { todoListState } from "../RecoilStates";
-import uuid from 'react-uuid';
-
+import uuid from "react-uuid";
+import { insertDailyTask } from "../api/insertData";
+import { getTask } from "../api/fetchData";
+import moment from "moment";
 
 export default function MemoBall({ color, show, index }) {
-  const setTodoList = useSetRecoilState(todoListState);
+  const [todoList, setTodoList] = useRecoilState(todoListState);
 
-  const addTask = () => {
-    setTodoList((og) => [...og, {color: color, content: 'test', uid: uuid()}]);
+  const addTask = async () => {
+    let uid = uuid();
+    let createDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
+    setTodoList((og) => [
+      ...og,
+      { color: color, content: "", uid: uid, datetime: createDateTime, done: false},
+    ]);
+    await insertDailyTask(uid, color, createDateTime);
   };
 
   const variants = {
@@ -41,7 +49,9 @@ export default function MemoBall({ color, show, index }) {
             backgroundColor: color,
           },
         }}
-        onClick={()=>{addTask(color)}}
+        onClick={() => {
+          addTask(color);
+        }}
       ></IconButton>
     </motion.div>
   );

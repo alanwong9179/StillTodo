@@ -1,12 +1,14 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { firestoreDB } from "./firebaseSetting" 
 import moment from "moment"
 
-export async function insertDailyTask() {
+export async function insertDailyTask(uid, color, createDateTime) {
     try{
-        const taskRef = await addDoc(collection(firestoreDB, moment().format('YYYY-MM-DD')), {
-            task: 'testing',
-            detailDateTime: moment().format('YYYY-MM-DD HH:mm:ss')
+        const taskRef = await setDoc(doc(firestoreDB, moment().format('YYYY-MM-DD'), uid ), {
+            task: '',
+            detailDateTime: createDateTime,
+            color: color,
+            done: false
         })
         if (taskRef !== null) {
             return true 

@@ -4,40 +4,52 @@ import React, { useState } from "react";
 import DoneBtn from "./DoneBtn";
 import EditBtn from "./EditBtn";
 import TextArea from "./TextArea";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { currEditTask, todoListState } from "../RecoilStates";
+import { Scrollbars } from "react-custom-scrollbars-2";
+import { doneTask, updateTaskContent } from "../api/updataData";
+import moment from "moment";
+import { getTask } from "../api/fetchData";
 
 const MemoBox = styled(Box)({
-  padding: 10,
+  padding: 20,
   height: 200,
   borderRadius: 15,
   display: "flex",
   flexDirection: "column",
 });
 
-export default function Memo({ content, index, color, uid }) {
-  const setCurrentEditTask = useSetRecoilState(currEditTask);
-  const currEdit = useRecoilValue(currEditTask);
-  const setTodoList = useSetRecoilState(todoListState)
-
+export default function Memo({ content, index, color, uid, date }) {
+console.log(date)
+  const [todoList, setTodoList] = useRecoilState(todoListState);
+  const [currEdit, setCurrEdit] = useRecoilState(currEditTask);
   const [editingText, setEditingText] = useState(content);
 
   const onEdit = () => {
-    setCurrentEditTask(uid);
+    setCurrEdit(uid);
   };
 
-  const onSaveEdit = () => {
-    console.log(editingText)
-    setTodoList((og) => 
-      og.uid === uid ?
-      {content: editingText}
-      :
-      og
+  const onSaveEdit = async () => {
+    await updateTaskContent(
+      uid,
+      editingText,
+      moment(date).format("YYYY-MM-DD")
+    );
+    setTodoList(
+      todoList.map((og) =>
+        og.uid === uid ? { ...og, content: editingText } : og
+      )
+    );
+    setCurrEdit("");
+  };
+
+  const onDone = async () => {
+    await doneTask(uid,moment(date).format("YYYY-MM-DD"))
+    setTodoList(
+      todoList.filter(og => og.uid !== uid)
     )
+
   }
-
-
-
 
   return (
     <MemoBox
@@ -46,21 +58,37 @@ export default function Memo({ content, index, color, uid }) {
         backgroundColor: color,
       }}
     >
-      <Box sx={{ flex: 1, overflow: "auto" }}>
-        {uid === currEdit ? <TextArea text={editingText} onEditing={setEditingText}/> : content}
+      <Box sx={{ flex: 1 }}>
+        <Scrollbars>
+          {uid === currEdit ? (
+            <TextArea text={editingText} onEditing={setEditingText} />
+          ) : (
+            <Box style={{ fontSize: 20, whiteSpace: "pre-wrap" }}>
+              {content}
+            </Box>
+          )}
+        </Scrollbars>
       </Box>
+
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "flex-end",
+          alignItems:'center'
         }}
       >
+        <Box flex={1}>
+          {moment(date).format('HH:mm:ss')}
+        </Box>
         <Box sx={{ marginRight: 2 }}>
-          <EditBtn onEdit={onEdit} isEditing={uid === currEdit} onSaveEdit={onSaveEdit}/>
+          <EditBtn
+            onEdit={onEdit}
+            isEditing={uid === currEdit}
+            onSaveEdit={onSaveEdit}
+          />
         </Box>
         <Box>
-          <DoneBtn isEditing={uid === currEdit} />
+          <DoneBtn isEditing={uid === currEdit} onDone={onDone}/>
         </Box>
       </Box>
     </MemoBox>
