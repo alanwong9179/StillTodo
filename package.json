@@ -1,5 +1,6 @@
 {
   "name": "still-todo",
+  "homepage": "https://alanwong9179.github.io/StillTodo/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
