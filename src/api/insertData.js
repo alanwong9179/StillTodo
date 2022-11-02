@@ -8,7 +8,8 @@ export async function insertDailyTask(uid, color, createDateTime) {
             task: '',
             detailDateTime: createDateTime,
             color: color,
-            done: false
+            done: false,
+            doneDateTime: ''
         })
         if (taskRef !== null) {
             return true 

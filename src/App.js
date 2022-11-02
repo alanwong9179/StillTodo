@@ -11,7 +11,6 @@ const RouterCenter = () => {
 
   return (
     <Routes>
-    
     <Route path="/" element={<TaskArea />}>
       <Route path="today" element={<TodayTasks />} />
       <Route path="notes" element={<Notes />} />
