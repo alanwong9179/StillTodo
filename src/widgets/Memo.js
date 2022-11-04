@@ -20,7 +20,6 @@ const MemoBox = styled(Box)({
 });
 
 export default function Memo({ content, index, color, uid, date }) {
-console.log(date)
   const [todoList, setTodoList] = useRecoilState(todoListState);
   const [currEdit, setCurrEdit] = useRecoilState(currEditTask);
   const [editingText, setEditingText] = useState(content);
@@ -32,24 +31,45 @@ console.log(date)
   const onSaveEdit = async () => {
     await updateTaskContent(
       uid,
-      editingText,
-      moment(date).format("YYYY-MM-DD")
+      editingText
     );
+    let targetData = todoList.filter(
+      (og) => og.date === moment(date).format("YYYY-MM-DD")
+    )[0].data;
+
+    let editedData = targetData.map(c => c.uid === uid ? {...c, content: editingText} : c)
+
     setTodoList(
       todoList.map((og) =>
-        og.uid === uid ? { ...og, content: editingText } : og
+        og.date === moment(date).format("YYYY-MM-DD")
+          ? { ...og, data: editedData}
+          : { ...og }
       )
     );
+
     setCurrEdit("");
   };
 
   const onDone = async () => {
-    await doneTask(uid,moment(date).format("YYYY-MM-DD"))
-    setTodoList(
-      todoList.filter(og => og.uid !== uid)
-    )
+    await doneTask(
+      uid,
+      editingText
+    );
 
-  }
+
+    let targetData = todoList.filter(
+      (og) => og.date === moment(date).format("YYYY-MM-DD")
+    )[0].data;
+
+    setTodoList(
+      todoList.map((og) =>
+        og.date === moment(date).format("YYYY-MM-DD")
+          ? { ...og, data: targetData.filter((info) => info.uid !== uid) }
+          : { ...og }
+      )
+    );
+
+  };
 
   return (
     <MemoBox
@@ -74,12 +94,10 @@ console.log(date)
         sx={{
           display: "flex",
           flexDirection: "row",
-          alignItems:'center'
+          alignItems: "center",
         }}
       >
-        <Box flex={1}>
-          {moment(date).format('HH:mm:ss')}
-        </Box>
+        <Box flex={1}>{moment(date).format("HH:mm:ss")}</Box>
         <Box sx={{ marginRight: 2 }}>
           <EditBtn
             onEdit={onEdit}
@@ -88,7 +106,7 @@ console.log(date)
           />
         </Box>
         <Box>
-          <DoneBtn isEditing={uid === currEdit} onDone={onDone}/>
+          <DoneBtn isEditing={uid === currEdit} onDone={onDone} />
         </Box>
       </Box>
     </MemoBox>

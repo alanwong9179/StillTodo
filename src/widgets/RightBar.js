@@ -18,7 +18,7 @@ export default function RightBar() {
     }}
     >
 
-      <MenuItem onClick={()=>{navigate('today')}}>Today</MenuItem>
+   
       
          
     </Box>

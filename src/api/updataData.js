@@ -2,8 +2,8 @@ import { doc, updateDoc } from "firebase/firestore";
 import moment from "moment";
 import { firestoreDB } from "./firebaseSetting";
 
-export async function updateTaskContent(uid, content, date){
-    const targetRef = doc(firestoreDB, date, uid)
+export async function updateTaskContent(uid, content){
+    const targetRef = doc(firestoreDB, 'Notes', uid)
     
     let updated = await updateDoc(targetRef, {
         task: content
@@ -17,8 +17,8 @@ export async function updateTaskContent(uid, content, date){
     return updated
 }
 
-export async function doneTask(uid, date){
-    const targetRef = doc(firestoreDB, date, uid)
+export async function doneTask(uid){
+    const targetRef = doc(firestoreDB, 'Notes', uid)
 
     let updated = await updateDoc(targetRef, {
         done: true,

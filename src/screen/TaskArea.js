@@ -1,19 +1,36 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { Box } from '@mui/system'
 import { getTitle } from '../function/getTitleByPath'
 import { Scrollbars } from 'react-custom-scrollbars-2';
+import TodayTasks from './TodayTasks';
+import { useRecoilState } from 'recoil';
+import { todoListState } from '../RecoilStates';
+import { getUndoneTask } from '../api/fetchData'
+import DailyTasks from './DailyTasks' ;
 
 export default function TaskArea() {
-    const location = useLocation()
-    const title = getTitle(location.pathname)
+    const [todoList, setTodoList] = useRecoilState(todoListState);
+
+  useEffect(() => {
+    getUndoneTask().then(t => {
+      setTodoList(t)
+    })
+  }, []);
+
+  useEffect(()=>{
+    console.log(todoList)
+  },[todoList])
 
   return (
     <Scrollbars>
     <Box sx={{mt:10, ml: 4, mr: 4,}}>
-     
-      <Box sx={{fontSize:'2rem'}}>{title}</Box>
-      <Box sx={{mt: 4}}><Outlet /></Box>
+     {
+      todoList.map(todo => (
+        todo.data.length > 0 &&
+          <DailyTasks date={todo.date} todoList={todo.data} />
+      ))
+     }
     </Box>
     </Scrollbars>
   )

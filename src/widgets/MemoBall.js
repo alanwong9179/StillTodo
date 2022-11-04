@@ -14,10 +14,37 @@ export default function MemoBall({ color, show, index }) {
   const addTask = async () => {
     let uid = uuid();
     let createDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
-    setTodoList((og) => [
-      ...og,
-      { color: color, content: "", uid: uid, datetime: createDateTime, done: false},
-    ]);
+    let recordHasToday = todoList.filter(td => td.date === moment().format('YYYY-MM-DD')).length > 0
+    let newTaskObj = { color: color, content: "", uid: uid, datetime: createDateTime, done: false, doneDateTime: ''}
+    
+    if (recordHasToday){
+   
+      let targetData = todoList.filter(
+        (og) => og.date === moment().format("YYYY-MM-DD")
+      )[0].data;
+
+      let addedData = targetData.push(newTaskObj)
+
+      setTodoList(
+        todoList.map((og) =>
+          og.date === moment().format("YYYY-MM-DD")
+            ? { ...og, data: addedData}
+            : { ...og }
+        )
+      );
+
+    }else{
+        let currTodoList = JSON.parse(JSON.stringify(todoList));
+        currTodoList.push({
+          date: moment().format("YYYY-MM-DD"),
+          data: [newTaskObj]
+        })
+
+        setTodoList(currTodoList)
+
+    }
+   
+   
     await insertDailyTask(uid, color, createDateTime);
   };
 
