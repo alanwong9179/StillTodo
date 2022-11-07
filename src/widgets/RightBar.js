@@ -17,10 +17,8 @@ export default function RightBar() {
         
     }}
     >
-
-   
-      
-         
+      <MenuItem onClick={()=>{navigate('/')}}>Tasks </MenuItem>
+      <MenuItem onClick={()=>{navigate('/keys')}}>Keychain </MenuItem>
     </Box>
   )
 }

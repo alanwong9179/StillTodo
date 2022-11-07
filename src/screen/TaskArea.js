@@ -4,23 +4,21 @@ import { Box } from '@mui/system'
 import { getTitle } from '../function/getTitleByPath'
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import TodayTasks from './TodayTasks';
-import { useRecoilState } from 'recoil';
-import { todoListState } from '../RecoilStates';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { todoListState, sortTodoList } from '../RecoilStates';
 import { getUndoneTask } from '../api/fetchData'
 import DailyTasks from './DailyTasks' ;
 
 export default function TaskArea() {
     const [todoList, setTodoList] = useRecoilState(todoListState);
+    const sortedList = useRecoilValue(sortTodoList);
+    console.log(sortedList)
 
   useEffect(() => {
     getUndoneTask().then(t => {
       setTodoList(t)
     })
   }, []);
-
-  useEffect(()=>{
-    console.log(todoList)
-  },[todoList])
 
   return (
     <Scrollbars>

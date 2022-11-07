@@ -16,7 +16,7 @@ export default function DailyTasks({date, todoList}) {
   return (
     <Box mb={5}>
      <Box sx={{fontSize:'2rem', mb:3}}>{isToday? 'Today': date}</Box>
-      <AnimatePresence>
+
           <motion.div
             animate={{ opacity: 1 }}
             initial={{ opacity: 0 }}
@@ -24,7 +24,8 @@ export default function DailyTasks({date, todoList}) {
           >
             <Grid2 container spacing={5}>
               {todoList.map((task, index) => (
-               <Grid2 item xs={4}>
+               <Grid2 item xs={12} sm={6} md={6} lg={4} xl={4} >
+             
                 <motion.div
                   key={task.uid}
                   layout
@@ -38,9 +39,6 @@ export default function DailyTasks({date, todoList}) {
                     x: 0,
                     opacity: 1,
                   }}
-                  exit={{
-                    opacity: 0,
-                  }}
                 >
           
                   <Memo
@@ -52,13 +50,13 @@ export default function DailyTasks({date, todoList}) {
                   />
                   
                 </motion.div>
+         
                 </Grid2>
                
               ))}
             </Grid2>
           </motion.div>
-        
-      </AnimatePresence>
+ 
     </Box>
   );
 }

@@ -2,6 +2,27 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { firestoreDB } from "./firebaseSetting";
 import moment from "moment";
 
+export async function getKeys(){
+  let keysRef = collection(firestoreDB, 'Keys')
+
+  const unRemoveQuery = query(keysRef, where("remove", "==", false))
+
+  const querySnapshot = await getDocs(unRemoveQuery)
+
+  let keysList = []
+
+  querySnapshot.forEach(k => {
+    keysList.push({
+      id: k.id,
+      desc: k.data().desc,
+      id: k.data().id,
+      password: k.data().password
+    })
+  })
+
+  return keysList
+}
+
 export async function getUndoneTask(){
 
   let notesRef = collection(firestoreDB, "Notes")

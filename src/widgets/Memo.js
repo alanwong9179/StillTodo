@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import DoneBtn from "./DoneBtn";
 import EditBtn from "./EditBtn";
 import TextArea from "./TextArea";
-import { useRecoilState } from "recoil";
+import { useRecoilState , useSetRecoilState} from "recoil";
 import { currEditTask, todoListState } from "../RecoilStates";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { doneTask, updateTaskContent } from "../api/updataData";
 import moment from "moment";
 import { getTask } from "../api/fetchData";
+import { showLoading } from "../RecoilStates";
 
 const MemoBox = styled(Box)({
   padding: 20,
@@ -23,6 +24,7 @@ export default function Memo({ content, index, color, uid, date }) {
   const [todoList, setTodoList] = useRecoilState(todoListState);
   const [currEdit, setCurrEdit] = useRecoilState(currEditTask);
   const [editingText, setEditingText] = useState(content);
+  const setShowLoading = useSetRecoilState(showLoading)
 
   const onEdit = () => {
     setCurrEdit(uid);
@@ -51,12 +53,12 @@ export default function Memo({ content, index, color, uid, date }) {
   };
 
   const onDone = async () => {
+    setShowLoading(true)
+
     await doneTask(
       uid,
       editingText
     );
-
-
     let targetData = todoList.filter(
       (og) => og.date === moment(date).format("YYYY-MM-DD")
     )[0].data;
@@ -68,6 +70,8 @@ export default function Memo({ content, index, color, uid, date }) {
           : { ...og }
       )
     );
+    setShowLoading(false)
+
 
   };
 

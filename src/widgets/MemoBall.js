@@ -7,45 +7,65 @@ import uuid from "react-uuid";
 import { insertDailyTask } from "../api/insertData";
 import { getTask } from "../api/fetchData";
 import moment from "moment";
+import { showLoading } from "../RecoilStates";
 
 export default function MemoBall({ color, show, index }) {
   const [todoList, setTodoList] = useRecoilState(todoListState);
+  const setShowLoading = useSetRecoilState(showLoading)
 
   const addTask = async () => {
+    setShowLoading(true)
     let uid = uuid();
     let createDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
-    let recordHasToday = todoList.filter(td => td.date === moment().format('YYYY-MM-DD')).length > 0
-    let newTaskObj = { color: color, content: "", uid: uid, datetime: createDateTime, done: false, doneDateTime: ''}
-    
-    if (recordHasToday){
-   
-      let targetData = todoList.filter(
+    await insertDailyTask(uid, color, createDateTime);
+    let recordHasToday =
+      todoList.filter((td) => td.date === moment().format("YYYY-MM-DD"))
+        .length > 0;
+    let newTaskObj = {
+      color: color,
+      content: "",
+      uid: uid,
+      datetime: createDateTime,
+      done: false,
+      doneDateTime: "",
+    };
+
+    if (recordHasToday) {
+      let copyData =  Object.assign(todoList);
+      let targetData = copyData.filter(
         (og) => og.date === moment().format("YYYY-MM-DD")
       )[0].data;
 
-      let addedData = targetData.push(newTaskObj)
+      let addedData;
+      let newData;
+      if (targetData.length > 0) {
+        newData = Object.assign([], targetData);
+        newData.push(newTaskObj)
+        addedData = newData
+      } else {
+        addedData = [newTaskObj];
+      }
 
       setTodoList(
         todoList.map((og) =>
           og.date === moment().format("YYYY-MM-DD")
-            ? { ...og, data: addedData}
+            ? { ...og, data: addedData }
             : { ...og }
         )
       );
+    } else {
+      let currTodoList = JSON.parse(JSON.stringify(todoList));
+      currTodoList.push({
+        date: moment().format("YYYY-MM-DD"),
+        data: [newTaskObj],
+      });
 
-    }else{
-        let currTodoList = JSON.parse(JSON.stringify(todoList));
-        currTodoList.push({
-          date: moment().format("YYYY-MM-DD"),
-          data: [newTaskObj]
-        })
-
-        setTodoList(currTodoList)
-
+      setTodoList(currTodoList);
     }
-   
-   
-    await insertDailyTask(uid, color, createDateTime);
+
+    setShowLoading(false)
+
+
   };
 
   const variants = {
