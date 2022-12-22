@@ -11,7 +11,7 @@ export default function RightBar() {
     <Box
     style={{
         backgroundColor: grey[50],
-        height: '100vh',
+        //height: '100vh',
         textAlign:'center',
         textAlign:'-webkit-center',
         

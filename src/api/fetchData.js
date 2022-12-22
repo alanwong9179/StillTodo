@@ -1,6 +1,7 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { firestoreDB } from "./firebaseSetting";
 import moment from "moment";
+import TaskList from "../widgets/TaskList";
 
 export async function getKeys(){
   let keysRef = collection(firestoreDB, 'Keys')
@@ -21,6 +22,28 @@ export async function getKeys(){
   })
 
   return keysList
+}
+
+export async function getTasks(isDone){
+  let notesRef = collection(firestoreDB, "Notes")
+
+  const unDoneQuery = query(notesRef, where("done", "==", false), orderBy("detailDateTime", "desc")) 
+
+  const querySnapshot = await getDocs(unDoneQuery)
+
+  let TaskList = [];
+  querySnapshot.forEach(t => {
+    TaskList.push({
+      uid: t.id,
+      datetime: t.data().detailDateTime,
+      content: t.data().task,
+      done: t.data().done,
+      doneDateTime: t.data().dateDateTime
+    })
+  })
+
+  return TaskList
+
 }
 
 export async function getUndoneTask(){

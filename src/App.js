@@ -8,11 +8,13 @@ import Notes from "./screen/Notes";
 import RightBar from "./widgets/RightBar";
 import PageLoading from "./widgets/PageLoading";
 import KeysList from "./screen/KeysList";
+import TopBar from "./widgets/TopBar";
+import TaskList from "./widgets/TaskList";
 
 const RouterCenter = () => {
   return (
     <Routes>
-      <Route path="/" element={<TaskArea />} />
+      <Route path="/" element={<TaskList />} />
       <Route path="/keys" element={<KeysList />} />
     </Routes>
   );
@@ -20,6 +22,10 @@ const RouterCenter = () => {
 
 function App() {
   return (
+    <Box>
+      <Box>
+        <TopBar />
+      </Box>
     <Box
       style={{
         display: "flex",
@@ -40,11 +46,13 @@ function App() {
         style={{
           flex: 1,
         }}>
-        <RightBar />
+
       </Box>
 
       <PageLoading />
     </Box>
+    </Box>
+
   );
 }
 
