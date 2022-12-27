@@ -7,7 +7,7 @@ import { showLoading } from '../RecoilStates';
 
 export default function PageLoading() {
     const open = useRecoilValue(showLoading)
-    console.log(open)
+    
 
   return (
       <Backdrop

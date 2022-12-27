@@ -5,7 +5,7 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { AnimatePresence, motion } from "framer-motion";
 import moment from 'moment'
 
-export default function DailyTasks({date, todoList}) {
+export default function DailyTasks({ date, todoList }) {
 
   const transition = {
     duration: 1,
@@ -15,48 +15,48 @@ export default function DailyTasks({date, todoList}) {
 
   return (
     <Box mb={5}>
-     <Box sx={{fontSize:'2rem', mb:3}}>{isToday? 'Today': date}</Box>
+      <Box sx={{ fontSize: '2rem', mb: 3 }}>{isToday ? 'Today' : date}</Box>
 
-          <motion.div
-            animate={{ opacity: 1 }}
-            initial={{ opacity: 0 }}
-            transition={transition}
-          >
-            <Grid2 container spacing={5}>
-              {todoList.map((task, index) => (
-               <Grid2 item xs={12} sm={6} md={6} lg={4} xl={4} >
-             
-                <motion.div
-                  key={task.uid}
-                  layout
-                  initial={{
-                    y: 0,
-                    x: 200,
-                    opacity: 1,
-                  }}
-                  animate={{
-                    y: 0,
-                    x: 0,
-                    opacity: 1,
-                  }}
-                >
-          
-                  <Memo
-                    content={task.content}
-                    color={task.color}
-                    key={index}
-                    uid={task.uid}
-                    date={task.datetime}
-                  />
-                  
-                </motion.div>
-         
-                </Grid2>
-               
-              ))}
+      <motion.div
+        animate={{ opacity: 1 }}
+        initial={{ opacity: 0 }}
+        transition={transition}
+      >
+        <Grid2 container spacing={5}>
+          {todoList.map((task, index) => (
+            <Grid2 item xs={12} sm={6} md={6} lg={4} xl={4} >
+
+              <motion.div
+                key={task.uid}
+                layout
+                initial={{
+                  y: 0,
+                  x: 200,
+                  opacity: 1,
+                }}
+                animate={{
+                  y: 0,
+                  x: 0,
+                  opacity: 1,
+                }}
+              >
+
+                <Memo
+                  content={task.content}
+                  color={task.color}
+                  key={index}
+                  uid={task.uid}
+                  date={task.datetime}
+                />
+
+              </motion.div>
+
             </Grid2>
-          </motion.div>
- 
+
+          ))}
+        </Grid2>
+      </motion.div>
+
     </Box>
   );
 }

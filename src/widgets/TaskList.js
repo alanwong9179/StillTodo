@@ -14,7 +14,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CheckIcon from "@mui/icons-material/Check";
 
 
-export default function TaskList({setShowDetail}) {
+export default function TaskList({ setSelectTask}) {
   const [todoList, setTodoList] = useState([]);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function TaskList({setShowDetail}) {
                     </IconButton>
                   }
                 >
-                  <ListItemButton onClick={setShowDetail}>
+                  <ListItemButton onClick={()=>{setSelectTask([task])}}>
                     <Box flex={1}>{task.content}</Box>
                     <Box
                       display={"flex"}
