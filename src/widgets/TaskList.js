@@ -25,7 +25,6 @@ export default function TaskList({setShowDetail}) {
   }, []);
 
 
-
   return (
     <Box>
       <Box style={{ textAlign: "-webkit-center" }}>

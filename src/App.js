@@ -76,7 +76,6 @@ function App() {
       <AnimatePresence>
       {showDetail && <TaskDetails setShowDetail={setShowDetail}/>}
       </AnimatePresence>
-
     </Box>
 
   );
