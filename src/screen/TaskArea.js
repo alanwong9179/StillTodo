@@ -12,7 +12,6 @@ import DailyTasks from './DailyTasks' ;
 export default function TaskArea() {
     const [todoList, setTodoList] = useRecoilState(todoListState);
     const sortedList = useRecoilValue(sortTodoList);
-    console.log(sortedList)
 
   useEffect(() => {
     getUndoneTask().then(t => {

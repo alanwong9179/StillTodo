@@ -5,9 +5,7 @@ import Button from '@mui/material/Button';
 import { useRecoilValue } from 'recoil';
 import { showLoading } from '../RecoilStates';
 
-export default function PageLoading() {
-    const open = useRecoilValue(showLoading)
-    
+export default function PageLoading({open}) {
 
   return (
       <Backdrop
